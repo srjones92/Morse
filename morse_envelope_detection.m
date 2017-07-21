@@ -3,6 +3,7 @@ function [envelope] = morse_envelope_detection( Y,Fs, filterData )
 % takes a morse sequence encoded on a CW carrier, does envelope detection
 % with a Hilbert transform and low pass filters 
 
+% Recommended: generalize the filter parameters a bit more.
 
 
 YH = hilbert(Y);
