@@ -1,3 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_tree
+%
+%   Generates a binary tree of cells than can be traversed for Morse
+%   decoding
+%
+%   Inputs: 
+%       
+%   Returns:
+%       M: 5 level Morse tree
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 function M = morse_tree
 
 % Level 5

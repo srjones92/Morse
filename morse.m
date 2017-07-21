@@ -13,7 +13,7 @@
 
 
 %% Decode from Audio File
-file = 'websdr_14036.5kHz.wav';
+file = 'data/websdr_14036.5kHz.wav';
 
 [Y, Fs] = audioread(file);
 

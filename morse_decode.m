@@ -1,3 +1,21 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_decode
+%
+%   decodes a morse sequence with the mapping 
+%   -1: -
+%   0:  SPACE
+%   1:  .
+%   uses the morse_tree function to produce character string
+%
+%   Inputs:      
+%       seqn: morse sequence
+%
+%   Returns:
+%       str: character string
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function str = morse_decode( seqn )
 
 M = morse_tree;

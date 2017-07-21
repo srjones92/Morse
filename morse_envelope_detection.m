@@ -1,9 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_envelope_detection
+%
+%   takes a morse sequence encoded on a CW carrier, does envelope detection
+%   with a Hilbert transform and low pass filters 
+%
+%   Inputs:      
+%       Y: Raw data on a carrier
+%       Fs: samping frequency (Hz)
+%       filterData: flag to pass through a low pass filter
+%
+%   Returns:
+%       envelope: signal envelope
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 function [envelope] = morse_envelope_detection( Y,Fs, filterData )
 
-% takes a morse sequence encoded on a CW carrier, does envelope detection
-% with a Hilbert transform and low pass filters 
 
-% Recommended: generalize the filter parameters a bit more.
+% Recommended: generalize the filter parameters a bit more, change
+% filterData from a flag to a structure containing filter parameters or a
+% precomputed set of coefficients
 
 
 YH = hilbert(Y);
