@@ -44,11 +44,12 @@ if filterData
     %[sos,g] = tf2sos(b,a);                      % Second-Order-Section For STability
 
    envelope = eF;
-end
-
-if plot_data
+   
+   if plot_data
  %   figure(1); plot(envelope(1:1.5*10^4)); title('Envelope');
     figure(1); plot(eF(1:1.5*10^4)); title('Filtered Envelope');
+    end
+
 end
 
 end

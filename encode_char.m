@@ -7,7 +7,7 @@ dd = D{1};
 S = S(2:end);
 D = D(2:end);
 if ~isempty(N)
-if N{1} == ch;
+if N{1} == ch
     dd = dd(2:end);
     return
 else

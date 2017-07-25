@@ -21,6 +21,9 @@ function seqn = morse_encode( str )
 % 1 is dot
 % -1 is dash
 seqn = [];
+
+% tree is only defined for upper case
+%str = upper(str);
 for n = 1:length(str)
    ch = encode_char(str(n));
    seqn = [seqn ch 0];

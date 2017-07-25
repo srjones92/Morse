@@ -30,7 +30,7 @@ function [seqn] = morse_envelope_decoder(envelope,Fs)
 
 u = mean(pw);
 seqn = [];
-for j=1:length(pw);    
+for j=1:length(pw)   
     if pw(j) < u
         seqn = [seqn, 1];
     else
@@ -38,7 +38,7 @@ for j=1:length(pw);
     end
     
     if ( j > 1 ) && ( j < length(pw) )
-        if abs( fcross(j) - icross(j+1) ) > u;
+        if abs( fcross(j) - icross(j+1) ) > u
             seqn = [seqn 0];
         end
     end
