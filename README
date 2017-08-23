@@ -1,0 +1,148 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%	 MORSE CODE UTILITIES README
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%	morse.m
+%
+% 	Script to set parameters, load .wav data, and perform basic tests
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_decode
+%
+%   decodes a morse sequence with the mapping 
+%   -1: -
+%   0:  SPACE
+%   1:  .
+%   uses the morse_tree function to produce character string
+%
+%   Inputs:      
+%       seqn: morse sequence
+%
+%   Returns:
+%       str: character string
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_encode
+%
+%   encodes a character string with the mapping 
+%   -1: -
+%   0:  SPACE
+%   1:  .
+%   traverses the morse_tree function to produce a morse sequence
+%
+%   Inputs:      
+%       str: character string
+%
+%   Returns:
+%       seqn: morse sequence
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_envelope_decoder
+%
+%   takes a morse sequence encoded on a CW carrier, does envelope detection
+%   with a Hilbert transform and low pass filters 
+%
+%   Inputs:      
+%       envelope: envelope signal, calculated by morse_envelope_detection
+%       Fs: samping frequency (Hz)
+%
+%   Returns:
+%       seqn: N x 1, {-1 0 1} sequence of dashes/spaces/dots
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_envelope_detection
+%
+%   takes a morse sequence encoded on a CW carrier, does envelope detection
+%   with a Hilbert transform and low pass filters 
+%
+%   Inputs:      
+%       Y: Raw data on a carrier
+%       Fs: samping frequency (Hz)
+%       filterData: flag to pass through a low pass filter
+%
+%   Returns:
+%       envelope: signal envelope
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_modulation
+%
+%   Modulates a given sequence onto a sinusoid
+%
+%   Inputs:      
+%       seqn: N x 1 in {-1, 0, 1} morse sequence of dash, space, dot
+%       param: data structure holding physical parameters of the signal
+%           fc: Carrier frequencey (Hz)
+%           fs: Sampling frequency (Hz)
+%           tdash: length of dash (s)
+%           tdot: length of dot (s)
+%           tsep: length of symbol separation (s)
+%           tspace: length of space (s)
+%           amp: relative amplitude (unitless)
+%       noise: structure for adding noise
+%           f: @(n) anonymous function, generator
+%           SNR: signal to noise ratio (dB)
+%
+%   Returns:
+%       Ys: Modulated sinusoid
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   morse_tree
+%
+%   Generates a binary tree of cells than can be traversed for Morse
+%   decoding
+%
+%   Inputs: 
+%       
+%   Returns:
+%       M: 5 level Morse tree
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   encode_char
+%
+%	Encodes a character by initializing and traversing a morse tree
+%
+%   Inputs: 
+%       ch: single character
+%   Returns:
+%       dd: sequence of 1 (.), -1 (-), and 0 (  ) encoding the character
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
