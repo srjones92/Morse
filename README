@@ -4,6 +4,24 @@
 %	 MORSE CODE UTILITIES README
 %
 %
+%	 These MATLAB functions will encode sequences of characters 
+%	 into Morse with the mapping . = 1, - = -1, __ = 0. Also
+%	 included are functions to demodulate and decode morse off
+%	 of a sinusoidal carrier, and a modulation function to put
+%	 an encoded stream of dots and dashes on a carrier
+%
+% 	 TO DO:
+%		- Tweak the test statistic in the demodulation script
+%		to better distinguish . and - : although seperating
+%		based on the mean pulsewidth should work, there could
+%		be cases where the relative fraction of one symbol vs
+%		the other could cause this to break
+%		- Write a helper function to setup parameters for 
+%		modulation. Currently this is done manually or just by
+%		copying from a .wav file previously decoded, a better 
+%		solution is needed
+%
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

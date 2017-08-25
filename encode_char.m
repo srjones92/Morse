@@ -1,3 +1,18 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   encode_char
+%
+%	Encodes a character by initializing and traversing a morse tree
+%
+%   Inputs: 
+%       ch: single character
+%   Returns:
+%       dd: sequence of 1 (.), -1 (-), and 0 (  ) encoding the character
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 function dd = encode_char(ch)
 S = {morse_tree};
 D = {0}; %{''}
