@@ -2,7 +2,8 @@
 %
 %   morse_modulation
 %
-%   Modulates a given sequence onto a sinusoid
+%   Modulates a given sequence onto a sinusoid using deterministic
+%   signal parameters
 %
 %   Inputs:      
 %       seqn: N x 1 in {-1, 0, 1} morse sequence of dash, space, dot

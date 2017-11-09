@@ -30,6 +30,16 @@ function [seqn] = morse_envelope_decoder(envelope,Fs)
 
 u = mean(pw);
 seqn = [];
+
+spacing = abs(fcross(1:end-1) - icross(2:end));
+[N, X] = hist(spacing,7);
+
+lm = local_max(N);
+
+% thresholds
+t_char = (X(lm(2)) + X(lm(1)))/2;
+t_space = (X(lm(3)) + X(lm(2)))/2;
+
 for j=1:length(pw)   
     if pw(j) < u
         seqn = [seqn, 1];
@@ -38,8 +48,10 @@ for j=1:length(pw)
     end
     
     if ( j > 1 ) && ( j < length(pw) )
-        if abs( fcross(j) - icross(j+1) ) > u
+        if (spacing(j) > t_char) && (spacing(j) < t_space)
             seqn = [seqn 0];
+        elseif spacing(j) > t_space
+            seqn = [seqn 0 0];
         end
     end
     
