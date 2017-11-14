@@ -15,7 +15,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [seqn] = morse_envelope_decoder(envelope,Fs)
+function [seqn,varargout] = morse_envelope_decoder(envelope,Fs)
+
+    nout = max(nargout,1) - 1;
+
 
 [pw, icross, fcross] = pulsewidth(envelope,'Tolerance',20.0);
 
@@ -59,7 +62,17 @@ end
 
 seqn = [seqn 0];
 
+out = struct;
+out.seqn = seqn;
+out.pw = pw;
+out.spacing = spacing;
+out.t_char = t_char;
+out.t_space = t_space;
 
+
+for k=1:nout
+   varargout{k} = out;
+end
 
 
 
