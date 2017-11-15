@@ -88,8 +88,11 @@ seqn = morse_encode(str);
 
 
 %% Compare Two Users w/ Different Statistics
+hold off; 
+close all;
 
-ntrials = 1000;
+
+ntrials = 500;
 str = 'LAUREN BROUGHT ANNIE TO GWC TODAY';
 seqn = morse_encode(str);
 
@@ -97,12 +100,12 @@ seqn = morse_encode(str);
 % User A - 'Fast' User
 pdashA = makedist('Normal'); 
 pdashA.mu = 0.165;
-pdashA.sigma = 0.0519;
+pdashA.sigma = 0.0519/10;
 pdashA = truncate(pdashA, 0.154, 0.1756);
 
 pdotA = makedist('Normal'); 
 pdotA.mu = 0.0526;
-pdotA.sigma = 0.0519;
+pdotA.sigma = 0.0519/10;
 pdotA = truncate(pdotA,0.0492,0.0702);
 
 pspaceA = makedist('Normal');
@@ -156,22 +159,56 @@ userB.amp = 5;
 
 
 
-%Run user A tests
+
 pwA_dot = [];
 pwA_dash = [];
 pwA_space = [];
+pwA_char = [];
 pwA_sep = [];
 
-[Ys] = morse_mod_rand( seqn, userA, [] );
+pwB_dot = [];
+pwB_dash = [];
+pwB_space = [];
+pwB_char = [];
+pwB_sep = [];
 
 
-[env] = morse_envelope_detection(Ys,Fs,[]);
-[seqn_env, outA ] = morse_envelope_decoder(env,Fs);
+
+for k = 1:ntrials
+
+
+%Run user A tests    
+[Ys_A] = morse_mod_rand( seqn, userA, [] );
+[envA] = morse_envelope_detection(Ys_A,userA.fs,[]);
+[seqn_envA, outA ] = morse_envelope_decoder(envA,userA.fs);
 
 pwA_dot = [pwA_dot, outA.pw(outA.pw < mean(outA.pw))];
 pwA_dash = [pwA_dash, outA.pw(outA.pw > mean(outA.pw))];
+pwA_space = [pwA_space, outA.spacing( outA.t_space < outA.spacing ) ]; 
+pwA_char = [pwA_char, outA.spacing( (outA.t_char < outA.spacing) & ( outA.spacing < outA.t_space) ) ];
+pwA_sep = [pwA_sep, outA.spacing( outA.t_char > outA.spacing ) ];
 %[str_env] = morse_decode(seqn_env)
 
 
 
+%Run user B tests
+[Ys_B] = morse_mod_rand( seqn, userB, [] );
+[env] = morse_envelope_detection(Ys_B,userB.fs,[]);
+[seqn_env, outB ] = morse_envelope_decoder(env,userB.fs);
+
+pwB_dot = [pwB_dot, outB.pw(outB.pw < mean(outB.pw))];
+pwB_dash = [pwB_dash, outB.pw(outB.pw > mean(outB.pw))];
+pwB_space = [pwB_space, outB.spacing( outB.t_space < outB.spacing ) ]; 
+pwB_char = [pwB_char, outB.spacing( (outB.t_char < outB.spacing) & ( outB.spacing < outB.t_space) ) ];
+pwB_sep = [pwB_sep, outB.spacing( outB.t_char > outB.spacing ) ];
+
+
+
+
+
+end
+
+hold on;
+hist(pwA_dot,100);
+hist(pwB_dot,100);
 
