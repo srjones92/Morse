@@ -35,13 +35,27 @@ u = mean(pw);
 seqn = [];
 
 spacing = abs(fcross(1:end-1) - icross(2:end));
-[N, X] = hist(spacing,7);
 
-lm = local_max(N);
+l_hist = 9;
+s = histogram(spacing,l_hist);
+lm = local_max(s.Values);
+
+% in case there is not enough resolution in the histogram to resolve the
+% peaks
+niter = 0;
+while length(lm) < 3
+    niter = niter + 1;
+    if niter > 100
+        error('Somehow you made an infinite loop. Good job.');
+    end
+    l_hist = l_hist + 2;
+    s = histogram(spacing,l_hist);
+    lm = local_max(s.Values);
+end
 
 % thresholds
-t_char = (X(lm(2)) + X(lm(1)))/2;
-t_space = (X(lm(3)) + X(lm(2)))/2;
+t_char = (s.BinEdges(lm(2)) + s.BinEdges(lm(1)))/2;
+t_space = (s.BinEdges(lm(3)) + s.BinEdges(lm(2)))/2;
 
 for j=1:length(pw)   
     if pw(j) < u

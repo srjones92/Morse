@@ -97,21 +97,39 @@ str = 'LAUREN BROUGHT ANNIE TO GWC TODAY';
 seqn = morse_encode(str);
 
 
+% Note that for a gamma dist:
+% mu = a/b
+% sigma^2 = a*b^2
+% a = mu^2/sigma^2
+% b = sigma^2/mu
+
 % User A - 'Fast' User
-pdashA = makedist('Normal'); 
-pdashA.mu = 0.165;
-pdashA.sigma = 0.0519/10;
-pdashA = truncate(pdashA, 0.154, 0.1756);
+pdashA = makedist('Gamma');
+pdashA.a = 0.165^2/(0.0519/10)^2;
+pdashA.b = (0.0519/10)^2/0.165;
 
-pdotA = makedist('Normal'); 
-pdotA.mu = 0.0526;
-pdotA.sigma = 0.0519/10;
-pdotA = truncate(pdotA,0.0492,0.0702);
+% pdashA = makedist('Normal'); 
+% pdashA.mu = 0.165;
+% pdashA.sigma = 0.0519/10;
+% pdashA = truncate(pdashA, 0.154, 0.1756);
 
-pspaceA = makedist('Normal');
-pspaceA.mu = 1.2*pdashA.mu;
-pspaceA.sigma = 0.0519;
-pspaceA = truncate(pspaceA,0.185,0.2107);
+pdotA = makedist('Gamma');
+pdotA.a = (0.0526)^2/0.0173^2;
+pdotA.b = 0.0173^2/(0.0526);
+
+% pdotA = makedist('Normal'); 
+% pdotA.mu = 0.0526;
+% pdotA.sigma = 0.0519/10;
+% pdotA = truncate(pdotA,0.0492,0.0702);
+
+pspaceA = makedist('Gamma');
+pspaceA.a = (1.2*0.165)^2/(0.0519/10)^2;
+pspaceA.b = (0.0519/10)^2/(1.2*0.165);
+
+% pspaceA = makedist('Normal');
+% pspaceA.mu = 1.2*pdashA.mu;
+% pspaceA.sigma = 0.0519;
+% pspaceA = truncate(pspaceA,0.185,0.2107);
 
 psepA = pdotA;
 
@@ -128,23 +146,35 @@ userA.amp = 5;
 %User B - 'Slower' User (Increased Mean and Variance)
 scale = 1.5;
 
-pdashB = makedist('Normal'); 
-pdashB.mu = pdashA.mu*scale;
-pdashB.sigma = pdashA.sigma*scale;
-pdashB = truncate(pdashB, scale*0.154, scale*0.1756);
+
+pdashB = makedist('Gamma');
+pdashB.a = (scale*pdashA.mean)^2/(scale*pdashA.std)^2;
+pdashB.b = (scale*pdashA.std)^2/(scale*pdashA.mean);
+
+% pdashB = makedist('Normal'); 
+% pdashB.mu = pdashA.mu*scale;
+% pdashB.sigma = pdashA.sigma*scale;
+% pdashB = truncate(pdashB, scale*0.154, scale*0.1756);
+% 
+
+pdotB = makedist('Gamma');
+pdotB.a = (scale*pdotA.mean)^2/(scale*pdotA.std)^2;
+pdotB.b = (scale*pdotA.std)^2/(scale*pdotA.mean);
+
+% pdotB = makedist('Normal');
+% pdotB.mu = pdotA.mu*scale;
+% pdotB.sigma = pdotA.sigma*scale;
+% pdotB = truncate(pdotB,scale*0.0492,scale*0.0702);
 
 
-pdotB = makedist('Normal');
-pdotB.mu = pdotA.mu*scale;
-pdotB.sigma = pdotA.sigma*scale;
-pdotB = truncate(pdotB,scale*0.0492,scale*0.0702);
-
-pspaceB = makedist('Normal');
-pspaceB.mu = pspaceA.mu*scale;
-pspaceB.sigma = pspaceA.sigma*scale;
-pspaceB = truncate(pspaceB,scale*0.185,scale*0.2107);
+pspaceB = makedist('Gamma');
+pspaceB.a = (scale*pspaceA.mean)^2/(scale*pspaceA.std)^2;
+pspaceB.b = (scale*pspaceA.std)^2/(scale*pspaceA.mean);
+% pspaceB = makedist('Normal');
+% pspaceB.mu = pspaceA.mu*scale;
+% pspaceB.sigma = pspaceA.sigma*scale;
+% pspaceB = truncate(pspaceB,scale*0.185,scale*0.2107);
  
-
 psepB = pdotB;
 
 userB = struct;
@@ -172,7 +202,10 @@ pwB_space = [];
 pwB_char = [];
 pwB_sep = [];
 
-
+userA.fs = userA.fs/32;
+userB.fs = userB.fs/32;
+userA.fc = userA.fc/32;
+userB.fc = userB.fc/32;
 
 for k = 1:ntrials
 
@@ -181,6 +214,12 @@ for k = 1:ntrials
 [Ys_A] = morse_mod_rand( seqn, userA, [] );
 [envA] = morse_envelope_detection(Ys_A,userA.fs,[]);
 [seqn_envA, outA ] = morse_envelope_decoder(envA,userA.fs);
+
+
+strA = morse_decode(seqn_envA);
+
+strerrorA(k) = norm(str(str~=' ') - strA(strA~=' '));
+
 
 pwA_dot = [pwA_dot, outA.pw(outA.pw < mean(outA.pw))];
 pwA_dash = [pwA_dash, outA.pw(outA.pw > mean(outA.pw))];
@@ -196,19 +235,21 @@ pwA_sep = [pwA_sep, outA.spacing( outA.t_char > outA.spacing ) ];
 [env] = morse_envelope_detection(Ys_B,userB.fs,[]);
 [seqn_env, outB ] = morse_envelope_decoder(env,userB.fs);
 
+strB = morse_decode(seqn_env);
+
+strerrorB(k) = norm(str(str~=' ') - strB(strB~=' '));
+
 pwB_dot = [pwB_dot, outB.pw(outB.pw < mean(outB.pw))];
 pwB_dash = [pwB_dash, outB.pw(outB.pw > mean(outB.pw))];
 pwB_space = [pwB_space, outB.spacing( outB.t_space < outB.spacing ) ]; 
 pwB_char = [pwB_char, outB.spacing( (outB.t_char < outB.spacing) & ( outB.spacing < outB.t_space) ) ];
 pwB_sep = [pwB_sep, outB.spacing( outB.t_char > outB.spacing ) ];
 
-
-
-
-
 end
 
+% Some basic results
+histogram(outA.pw,20,  'FaceColor','r');
 hold on;
-hist(pwA_dot,100);
-hist(pwB_dot,100);
+histogram(outB.pw,20,  'FaceColor','g');
+
 

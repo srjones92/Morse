@@ -16,7 +16,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [envelope] = morse_envelope_detection( Y,Fs, filterData )
+function [env] = morse_envelope_detection( Y,Fs, filterData )
 
 
 % Recommended: generalize the filter parameters a bit more, change
@@ -26,7 +26,7 @@ function [envelope] = morse_envelope_detection( Y,Fs, filterData )
 
 YH = hilbert(Y);
 
-envelope = sqrt(Y.^2 + YH.*conj(YH));
+env = sqrt(Y.^2 + YH.*conj(YH));
 
 
 plot_data = 1;
@@ -40,10 +40,10 @@ if filterData
     Rs  =   8;                                % Stopband Ripple (dB)
     [n,Wn]  = buttord(Fco/Fn, Fsb/Fn, Rp, Rs);  % Filter Order & Wco
     [b,a]   = butter(n,Wn);                     % Lowpass Is Default Design
-    eF = filter(b,a,envelope);
+    eF = filter(b,a,env);
     %[sos,g] = tf2sos(b,a);                      % Second-Order-Section For STability
 
-   envelope = eF;
+   env = eF;
    
    if plot_data
  %   figure(1); plot(envelope(1:1.5*10^4)); title('Envelope');
