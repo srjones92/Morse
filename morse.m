@@ -216,9 +216,9 @@ for k = 1:ntrials
 [seqn_envA, outA ] = morse_envelope_decoder(envA,userA.fs);
 
 
-strA = morse_decode(seqn_envA);
+strA = morse_decode(seqn_envA)
 
-strerrorA(k) = norm(str(str~=' ') - strA(strA~=' '));
+%strerrorA(k) = norm(str(str~=' ') - strA(strA~=' '));
 
 
 pwA_dot = [pwA_dot, outA.pw(outA.pw < mean(outA.pw))];
@@ -235,9 +235,9 @@ pwA_sep = [pwA_sep, outA.spacing( outA.t_char > outA.spacing ) ];
 [env] = morse_envelope_detection(Ys_B,userB.fs,[]);
 [seqn_env, outB ] = morse_envelope_decoder(env,userB.fs);
 
-strB = morse_decode(seqn_env);
+strB = morse_decode(seqn_env)
 
-strerrorB(k) = norm(str(str~=' ') - strB(strB~=' '));
+%strerrorB(k) = norm(str(str~=' ') - strB(strB~=' '));
 
 pwB_dot = [pwB_dot, outB.pw(outB.pw < mean(outB.pw))];
 pwB_dash = [pwB_dash, outB.pw(outB.pw > mean(outB.pw))];

@@ -43,7 +43,9 @@ lm = local_max(s.Values);
 % in case there is not enough resolution in the histogram to resolve the
 % peaks
 niter = 0;
-while length(lm) < 3
+indZeroChar = [];
+indZeroSpace = [];
+while (length(lm) < 3) || isempty(indZeroChar) || isempty(indZeroSpace)
     niter = niter + 1;
     if niter > 100
         error('Somehow you made an infinite loop. Good job.');
@@ -51,11 +53,18 @@ while length(lm) < 3
     l_hist = l_hist + 2;
     s = histogram(spacing,l_hist);
     lm = local_max(s.Values);
+    if length(lm) > 2
+        indZero = find(~s.Values);
+        indZeroChar = indZero( (lm(1) < indZero) & (lm(2) > indZero));
+        indZeroSpace = indZero( (lm(2) < indZero) & (lm(3) > indZero));
+    end
 end
 
+% will just using the local min be accurate enough?
+
 % thresholds
-t_char = (s.BinEdges(lm(2)) + s.BinEdges(lm(1)))/2;
-t_space = (s.BinEdges(lm(3)) + s.BinEdges(lm(2)))/2;
+t_char = (s.BinEdges(indZeroChar(1)) + s.BinEdges(indZeroChar(end)+1))/2;
+t_space = (s.BinEdges(indZeroSpace(1)) + s.BinEdges(indZeroSpace(end)+1))/2;
 
 for j=1:length(pw)   
     if pw(j) < u
